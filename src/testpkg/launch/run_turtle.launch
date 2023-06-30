@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="turtlesim" type="turtlesim_node" name="turtle1" output="screen"/>
+    
+    <node pkg="testpkg" type="testcontroller.py" name="turtlecontroller1" output="screen">
+        <param name="id" value="1"/>
+    </node>
+</launch>
