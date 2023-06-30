@@ -1,0 +1,30 @@
+<launch>
+    <!-- 打开小乌龟 -->
+    <node pkg="turtlesim" type="turtlesim_node" name="turtle1" output="screen"/>
+    <!-- 添加一个小乌龟2 -->
+    <node pkg="rosservice" type="rosservice" name="spawn_turtle" args="call /spawn '{x: 2.0, y: 2.0, theta: 0, name: turtle2}'"/>
+ 
+    <!-- 跟随模式 可选 tf、topic -->
+    <arg name="follow_mode"  default="tf" doc="opt: topic,tf"/>
+
+
+    <!-- topic方式  -->
+    <group if="$(eval follow_mode == 'topic')">
+        <node pkg="testpkg" type="followturtle_topic.py" name="turtle_topic" output="screen"/>
+    </group> 
+
+    <!-- tf方式  -->
+    <group if="$(eval follow_mode == 'tf')">
+        <!-- 坐标发布 -->
+        <node pkg="testpkg" type="turtle_tf.py" name="turtle_ft" output="screen"/>
+        <!-- 控制跟随节点 -->
+        <node pkg="testpkg" type="followturtle_tf.py" name="followturtle" output="screen"/>
+    </group> 
+
+    
+    <!-- 键盘控制小乌龟1 -->
+    <node pkg="testpkg" type="testcontroller.py" name="turtlecontroller1" output="screen">
+        <param name="id" value="1"/>
+    </node>
+
+</launch>
